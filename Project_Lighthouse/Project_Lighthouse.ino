@@ -1,5 +1,5 @@
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
+  // initialize digital pin 13 as an output.
   pinMode(13, OUTPUT);
 }
 
