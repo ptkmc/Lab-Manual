@@ -11,6 +11,15 @@ const int Green2 = 8;
 const int Yellow2 = 9;
 const int Red2 = 10;
 
+// If you are using a common-anode RGB LED
+// you can change the below boolean to 'false'
+boolean common_cathode = true;
+
+// A common-cathode RGB LED works similarly to
+// other LEDs, with 0 being LOW and 255 being HIGH
+// For common-anode RGB LEDs the highest value (255)
+// stops the flow of electricity, turning off the color
+
 void setup() {
   // Loop through pins 3 through 13 setting each as OUTPUTs
   for (int x=3; x<14; x++) {
@@ -28,20 +37,20 @@ void loop() {
   
   // When Traffic Light #2 comes on the pedestrians can safely cross
   goTimer(4000, Red1, Green2);
-  blinkTimer(4, 500, Red1, Green2); 
+  blinkTimer(4, 2000, Red1, Green2); 
   stopTimer(2000, Red1, Yellow2);
 }
 
 void stopTimer(int duration, int light1, int light2 ) {
   lightsOut(); // Turn off the traffic lights
-  walkLight(0, 150, 255); // Set the RGB LED to an orange-red color
+  walkLight(10, 0, 255); // Set the RGB LED to an orange-red color
   digitalWrite(light1, HIGH);
   digitalWrite(light2, HIGH);  
-  // This FOR loop checks for a button press every 1 millisecond
+  // This for loop checks for a button press every 1 millisecond
   // for the length of the duration parameter  
   for (int x=0; x<duration; x++) {
     buttonState = digitalRead(buttonPin);
-    if (light1 == 11 and buttonState == HIGH) {
+    if (light1 == Green1 and buttonState == HIGH) {
       break; 
     } else {
       delay(1);   
@@ -51,13 +60,16 @@ void stopTimer(int duration, int light1, int light2 ) {
 
 void goTimer(int duration, int light1, int light2) {  
   lightsOut();
-  walkLight(40, 40, 0); // Set the RGB LED to white
+  walkLight(40, 0, 0); // Set the RGB LED to white
   digitalWrite(light1, HIGH);
   digitalWrite(light2, HIGH);
   delay(duration);       
 }
 
 void blinkTimer(int cycles, int duration, int light1, int light2 ) {  
+  // Blink the crossing light (cycles) number of times 
+  // over (duration) seconds
+  duration = (duration / cycles);
   lightsOut();
   for (int i=0; i<cycles; i++) {
     // Turn off the RGB LED
@@ -66,21 +78,26 @@ void blinkTimer(int cycles, int duration, int light1, int light2 ) {
     digitalWrite(light2, HIGH);
     delay(duration);
     // Set the RGB LED to an orange-red color
-    walkLight(0, 150, 255);
+    walkLight(10, 0, 255);
     delay(duration);    
   }     
 }
 
 void walkLight(int R, int G, int B) {
-  // Set the color of the RGB LED 
-  // Remember that for a common-annode RGB LED the highest value (255)
-  // stops the flow of electricity, turning off the color
+  // Set the color of the RGB LED using PWM to write
+  // a value between 0 and 255
+  if (common_cathode == true) {
+    R = 255 - R;
+    G = 255 - G;
+    B = 255 - B;
+  }
   analogWrite(6, R);   // Red
   analogWrite(5, G);   // Green
   analogWrite(3, B);   // Blue     
 }
 
 void lightsOut() {
+  // Turn off all 6 traffic lights
   for (int i=8; i<14; i++) {
     digitalWrite(i, LOW);
   }
