@@ -1,3 +1,18 @@
+/* Building on the code and wiring from the 'Intersection' project, this project will install a cross-walk signal
+showing pedestrians when it is safe to cross the intersection.
+
+The new crosswalk also includes an crosswalk signal light to tell pedestrians when it is safe and unsafe to cross by changing colors and flashing.
+
+While traffic is keeping the pedestrian from crossing the street, The signal light will shine a steady orange color. 
+Once the traffic has a red light, it will be safe to cross the street and the crosswalk signal light will shine white.
+
+After a few seconds, the signal light will begin to flash orange, telling the pedestrian that the light is about to change.
+Eventually, the other street's green light will turn yellow, then red. Once it turns red, the pedestrian signal light will 
+stop flashing and return to its original steady orange.
+
+Our new crosswalk also includes a button the pedestrian can press to immediately change the traffic light from green light to yellow
+and then red, allowing them to safely cross the street.*/
+
 const int buttonPin = 2;
 int buttonState = 0;
 
