@@ -50,10 +50,7 @@ void setup() {
     }
     delay(duration2[thisNote]);
     speakerpin.stop(); // Stop for the next note
-    digitalWrite(ledpin[0], LOW);
-    digitalWrite(ledpin[1], LOW);
-    digitalWrite(ledpin[2], LOW);
-    digitalWrite(ledpin[3], LOW);
+    writeLeds(0);
     delay(25);
   }
   delay(1000);
@@ -62,10 +59,7 @@ void setup() {
 void loop() {
   // Generate the array to be matched by the player
   for (int y = 0; y <= 99; y++) {
-    digitalWrite(ledpin[0], HIGH);
-    digitalWrite(ledpin[1], HIGH);
-    digitalWrite(ledpin[2], HIGH);
-    digitalWrite(ledpin[3], HIGH);
+    writeLeds(255);
     // Play the next note
     for (int thisNote = 0; thisNote < 6; thisNote ++) {
       speakerpin.play(note[thisNote]); // Hold the note
@@ -73,10 +67,7 @@ void loop() {
       speakerpin.stop();
       delay(25);
     }
-    digitalWrite(ledpin[0], LOW);
-    digitalWrite(ledpin[1], LOW);
-    digitalWrite(ledpin[2], LOW);
-    digitalWrite(ledpin[3], LOW);
+    writeLeds(0);
     delay(1000);
     // Limited by the turn variable
     for (int y = turn; y <= turn; y++) {
@@ -195,19 +186,20 @@ void input() {
 // Function used if player fails to match the sequence
 void fail() {
   for (int y = 0; y <= 2; y++) { // Flash lights to indicate failure
-    digitalWrite(ledpin[0], HIGH);
-    digitalWrite(ledpin[1], HIGH);
-    digitalWrite(ledpin[2], HIGH);
-    digitalWrite(ledpin[3], HIGH);
+    writeLeds(255);
     speakerpin.play(NOTE_G3, 300);
     delay(200);
-    digitalWrite(ledpin[0], LOW);
-    digitalWrite(ledpin[1], LOW);
-    digitalWrite(ledpin[2], LOW);
-    digitalWrite(ledpin[3], LOW);
+    writeLeds(0);
     speakerpin.play(NOTE_C3, 300);
     delay(200);
   }
   delay(500);
   turn = -1; // Reset turn value to start the game again
+}
+
+// Function to turn all 4 lights on or off
+void writeLeds(int brightness) {
+  for (int i = 0; i<4; i++) {
+    digitalWrite(ledpin[i], brightness);
+  }
 }
