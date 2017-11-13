@@ -49,6 +49,6 @@ void loop() {
   else {
     digitalWrite(fanpin, LOW);
   }
-  delay(100);                           // waits for the servo to get there
+  delay(100);
 }
 
